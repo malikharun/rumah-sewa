@@ -1,0 +1,2327 @@
+
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistem Pengurusan Sumbangan & Perbelanjaan Rumah Sewa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-primary: #0f172a;
+      --bg-surface: #1e293b;
+      --bg-card: #1e293b;
+      --bg-subtle: #334155;
+      --border-color: #334155;
+      --border-focus: #3b82f6;
+      
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      
+      --emerald-accent: #10b981;
+      --emerald-dark: #065f46;
+      --emerald-light: #d1fae5;
+      
+      --blue-accent: #3b82f6;
+      --blue-dark: #1e40af;
+      
+      --amber-accent: #f59e0b;
+      --amber-dark: #78350f;
+      --amber-light: #fef3c7;
+      
+      --rose-accent: #f43f5e;
+      --rose-dark: #881337;
+      --rose-light: #ffe4e6;
+      
+      --purple-accent: #8b5cf6;
+      
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -4px rgba(0, 0, 0, 0.4);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-full: 9999px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      overflow-x: hidden;
+      width: 100%;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      width: 100%;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 1rem 1.25rem 3rem 1.25rem;
+    }
+
+    header {
+      background-color: rgba(30, 41, 59, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.875rem 1.25rem;
+      max-width: 1280px;
+      margin: 0 auto;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      font-size: 1.25rem;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+
+    .brand-text h1 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .brand-text p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .month-picker-wrap {
+      display: flex;
+      align-items: center;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 0.35rem 0.65rem;
+      gap: 0.5rem;
+    }
+
+    .month-picker-wrap label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .month-picker-wrap input[type="month"] {
+      background: transparent;
+      border: none;
+      color: var(--text-main);
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 0.875rem;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .tabs-nav {
+      display: flex;
+      overflow-x: auto;
+      gap: 0.5rem;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 1.5rem;
+      scrollbar-width: none;
+    }
+    .tabs-nav::-webkit-scrollbar { display: none; }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 0.875rem;
+      font-weight: 600;
+      padding: 0.625rem 1rem;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .tab-btn.active {
+      color: #ffffff;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.25) 0%, rgba(59, 130, 246, 0.25) 100%);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.55rem 1rem;
+      border-radius: var(--radius-md);
+      font-size: 0.875rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #059669 0%, #047857 100%);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: var(--bg-subtle);
+      color: var(--text-main);
+      border-color: var(--border-color);
+    }
+    .btn-secondary:hover {
+      background: #475569;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border-color: var(--border-color);
+      color: var(--text-muted);
+    }
+    .btn-outline:hover {
+      color: var(--text-main);
+      border-color: var(--text-muted);
+    }
+
+    .btn-danger {
+      background: rgba(244, 63, 94, 0.15);
+      border-color: rgba(244, 63, 94, 0.3);
+      color: #fb7185;
+    }
+    .btn-danger:hover {
+      background: rgba(244, 63, 94, 0.3);
+    }
+
+    .btn-sm {
+      padding: 0.35rem 0.65rem;
+      font-size: 0.775rem;
+      border-radius: var(--radius-sm);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .stat-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+    }
+
+    .stat-card.emerald::before { background: var(--emerald-accent); }
+    .stat-card.blue::before { background: var(--blue-accent); }
+    .stat-card.amber::before { background: var(--amber-accent); }
+    .stat-card.rose::before { background: var(--rose-accent); }
+    .stat-card.purple::before { background: var(--purple-accent); }
+
+    .stat-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+
+    .stat-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .stat-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .stat-value {
+      font-size: 1.65rem;
+      font-weight: 800;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.35rem;
+    }
+
+    .stat-desc {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+    }
+
+    .content-section {
+      display: none;
+      animation: fadeIn 0.25s ease forwards;
+    }
+    .content-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .card-title-group h2 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card-title-group p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.2rem;
+    }
+
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      background: var(--bg-primary);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.875rem;
+    }
+
+    thead th {
+      background: rgba(30, 41, 59, 0.9);
+      padding: 0.75rem 1rem;
+      font-weight: 600;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border-color);
+      white-space: nowrap;
+    }
+
+    tbody td {
+      padding: 0.875rem 1rem;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.6);
+      color: var(--text-main);
+      vertical-align: middle;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    tbody tr:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .money {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: var(--radius-full);
+      font-size: 0.725rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .badge-success {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .badge-warning {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .badge-danger {
+      background: rgba(244, 63, 94, 0.15);
+      color: #fb7185;
+      border: 1px solid rgba(244, 63, 94, 0.3);
+    }
+
+    .badge-info {
+      background: rgba(59, 130, 246, 0.15);
+      color: #60a5fa;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+
+    .badge-neutral {
+      background: rgba(148, 163, 184, 0.15);
+      color: #cbd5e1;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+    }
+
+    .info-banner {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(16, 185, 129, 0.08) 100%);
+      border: 1px solid rgba(59, 130, 246, 0.25);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      margin-bottom: 1.25rem;
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+      font-size: 0.85rem;
+      color: #cbd5e1;
+    }
+
+    .info-banner-icon {
+      font-size: 1.25rem;
+      line-height: 1;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      z-index: 100;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.2s ease;
+    }
+
+    .modal-backdrop.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 540px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+      transform: translateY(16px);
+      transition: transform 0.2s ease;
+    }
+
+    .modal-backdrop.open .modal-card {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      padding: 1.25rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-header h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .modal-close {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 1.25rem;
+      padding: 0.25rem;
+      line-height: 1;
+    }
+
+    .modal-close:hover { color: var(--text-main); }
+
+    .modal-body {
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .form-group label {
+      font-size: 0.775rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .form-control {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 0.6rem 0.85rem;
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.875rem;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+
+    .form-control:focus {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    .modal-footer {
+      padding: 1rem 1.25rem;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+    }
+
+    #toast-container {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      z-index: 150;
+      max-width: 380px;
+    }
+
+    .toast {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--emerald-accent);
+      border-radius: var(--radius-md);
+      padding: 0.85rem 1.2rem;
+      box-shadow: var(--shadow-lg);
+      font-size: 0.875rem;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      animation: slideIn 0.25s ease forwards;
+    }
+
+    .toast.error {
+      border-left-color: var(--rose-accent);
+    }
+
+    .toast.info {
+      border-left-color: var(--blue-accent);
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    .printable-report {
+      background: #ffffff;
+      color: #0f172a;
+      border-radius: var(--radius-md);
+      padding: 2.5rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      margin: 1.5rem auto;
+      max-width: 860px;
+      width: 100%;
+      box-sizing: border-box;
+      font-size: 0.9rem;
+    }
+
+    .printable-report h1, 
+    .printable-report h2, 
+    .printable-report h3 {
+      color: #0f172a;
+    }
+
+    .report-header {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 1.25rem;
+      margin-bottom: 1.5rem;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .report-brand h2 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #047857;
+    }
+
+    .report-meta {
+      text-align: right;
+      font-size: 0.825rem;
+      color: #64748b;
+    }
+
+    .report-meta strong {
+      color: #0f172a;
+    }
+
+    .report-section-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #334155;
+      margin: 1.25rem 0 0.5rem 0;
+      border-left: 3px solid #059669;
+      padding-left: 0.5rem;
+    }
+
+    .report-table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin-bottom: 1.25rem;
+      border-radius: var(--radius-sm);
+    }
+
+    .report-table {
+      width: 100%;
+      min-width: 520px;
+      border-collapse: collapse;
+      font-size: 0.825rem;
+    }
+
+    .report-table th {
+      background: #f1f5f9;
+      color: #475569;
+      border: 1px solid #cbd5e1;
+      padding: 0.5rem 0.75rem;
+      text-align: left;
+    }
+
+    .report-table td {
+      border: 1px solid #e2e8f0;
+      padding: 0.5rem 0.75rem;
+      color: #1e293b;
+    }
+
+    .report-summary-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: var(--radius-sm);
+      padding: 1rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .report-summary-item p {
+      font-size: 0.75rem;
+      color: #64748b;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .report-summary-item h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #0f172a;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .signature-area {
+      margin-top: 2.5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      padding-top: 1rem;
+    }
+
+    .signature-box {
+      border-top: 1px dashed #94a3b8;
+      padding-top: 0.5rem;
+      font-size: 0.8rem;
+      color: #475569;
+    }
+
+    /* Print media optimization */
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+      }
+      header, .tabs-nav, .header-controls, .no-print, #toast-container, .btn {
+        display: none !important;
+      }
+      .container {
+        max-width: 100% !important;
+        padding: 0 !important;
+      }
+      .printable-report {
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+      }
+      .report-table-wrapper {
+        overflow-x: visible !important;
+        margin-bottom: 1rem !important;
+      }
+      .report-table {
+        min-width: 100% !important;
+      }
+      .content-section {
+        display: none !important;
+      }
+      #section-laporan {
+        display: block !important;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header-inner {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .header-controls {
+        justify-content: space-between;
+      }
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      .report-header {
+        flex-direction: column;
+      }
+      .report-meta {
+        text-align: left;
+      }
+      .report-summary-box {
+        grid-template-columns: 1fr;
+      }
+      .printable-report {
+        padding: 1.25rem 0.85rem;
+        margin: 1rem 0;
+      }
+      .signature-area {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-icon">🏠</div>
+        <div class="brand-text">
+          <h1>Sumbangan & Perbelanjaan Rumah Sewa</h1>
+          <p>Member Contribution & Expenses Generator</p>
+        </div>
+      </div>
+      <div class="header-controls">
+        <div class="month-picker-wrap">
+          <label for="currentMonthPicker">Bulan:</label>
+          <input type="month" id="currentMonthPicker">
+        </div>
+        <button class="btn btn-outline btn-sm no-print" onclick="exportDataJSON()" title="Sandarkan Data">💾 Simpan Data</button>
+        <button class="btn btn-outline btn-sm no-print" onclick="triggerImportJSON()" title="Muat Semula Data">📂 Muat Data</button>
+        <input type="file" id="importFileInput" accept=".json" style="display:none" onchange="importDataJSON(event)">
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="stats-grid" id="statsGrid">
+      <div class="stat-card emerald">
+        <div class="stat-header">
+          <span class="stat-title">Jumlah Kutipan Bulan Ini</span>
+          <span class="stat-icon">💵</span>
+        </div>
+        <div class="stat-value" id="statCollected">RM 0.00</div>
+        <div class="stat-desc" id="statCollectedDesc">0 bayaran direkodkan</div>
+      </div>
+
+      <div class="stat-card blue">
+        <div class="stat-header">
+          <span class="stat-title">Jumlah Perbelanjaan Bulanan</span>
+          <span class="stat-icon">🧾</span>
+        </div>
+        <div class="stat-value" id="statExpenses">RM 0.00</div>
+        <div class="stat-desc" id="statExpensesDesc">Sewa & semua utiliti</div>
+      </div>
+
+      <div class="stat-card amber">
+        <div class="stat-header">
+          <span class="stat-title">Jumlah Tunggakan Ahli</span>
+          <span class="stat-icon">⚠️</span>
+        </div>
+        <div class="stat-value" id="statArrears">RM 0.00</div>
+        <div class="stat-desc" id="statArrearsDesc">Belum dijelaskan ahli</div>
+      </div>
+
+      <div class="stat-card purple">
+        <div class="stat-header">
+          <span class="stat-title">Tabung Deposit Rumah (Cagaran)</span>
+          <span class="stat-icon">🔒</span>
+        </div>
+        <div class="stat-value" id="statDepositPool">RM 0.00</div>
+        <div class="stat-desc">Asing dari bil bulanan (Boleh pulang)</div>
+      </div>
+    </section>
+
+    <nav class="tabs-nav no-print">
+      <button class="tab-btn active" onclick="switchTab('dashboard')">📊 Ringkasan Eksekutif</button>
+      <button class="tab-btn" onclick="switchTab('ahli')">👥 Senarai Ahli Rumah</button>
+      <button class="tab-btn" onclick="switchTab('deposit')">🔒 Deposit & Wang Cagaran</button>
+      <button class="tab-btn" onclick="switchTab('perbelanjaan')">🧾 Bil & Perbelanjaan Bulanan</button>
+      <button class="tab-btn" onclick="switchTab('bayaran')">💰 Rekod Kutipan & Bayaran</button>
+      <button class="tab-btn" onclick="switchTab('laporan')">📄 Jana Penyata & Cetak</button>
+    </nav>
+
+    <section id="section-dashboard" class="content-section active">
+      <div class="info-banner">
+        <div class="info-banner-icon">💡</div>
+        <div>
+          <strong>Panduan Pengurusan Wang Sewa:</strong> Deposit sewa (wang cagaran keselamatan & utiliti awal) disimpan dalam <em>Tabung Amanah Asing</em> kerana ia adalah milik ahli yang layak dipulangkan oleh pemilik premis selepas tamat kontrak. Perbelanjaan bulanan (sewa, elektrik TNB, air, WiFi, dapur) diagihkan secara telus setiap bulan.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title-group">
+            <h2>Kedudukan Kewangan Bulan Ini</h2>
+            <p id="dashboardMonthLabel">Ringkasan aliran tunai dan perkongsian kos seisi rumah</p>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="openExpenseModal()">+ Tambah Perbelanjaan</button>
+        </div>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Ahli Rumah</th>
+                <th>Bilik / Unit</th>
+                <th>Bahagian Kos Perlu Bayar</th>
+                <th>Jumlah Telah Dibayar</th>
+                <th>Status / Tunggakan</th>
+                <th>Tindakan Cepat</th>
+              </tr>
+            </thead>
+            <tbody id="dashboardMemberSummaryBody">
+              <!-- Populated via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="section-ahli" class="content-section">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title-group">
+            <h2>Pengurusan Ahli Rumah Sewa</h2>
+            <p>Daftar ahli serumah untuk pengagihan kos sewa, utiliti dan deposit</p>
+          </div>
+          <button class="btn btn-primary" onclick="openMemberModal()">+ Tambah Ahli Baru</button>
+        </div>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Nama Penuh</th>
+                <th>No. Telefon / WhatsApp</th>
+                <th>Bilik</th>
+                <th>Status Sewaan</th>
+                <th>Tarikh Masuk</th>
+                <th>Tindakan</th>
+              </tr>
+            </thead>
+            <tbody id="membersTableBody">
+              <!-- Populated via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="section-deposit" class="content-section">
+      <div class="info-banner">
+        <div class="info-banner-icon">🛡️</div>
+        <div>
+          <strong>Akaun Deposit Cagaran (Asing):</strong> Bahagian ini menguruskan wang cagaran <em>(cth: 2+1 bulan sewa & utiliti)</em> yang diserahkan kepada tuan rumah. Wang ini TIDAK dicampurkan ke dalam kos bulanan kerana ia merupakan aset cagaran yang boleh dituntut kembali apabila ahli berpindah keluar tertakluk syarat perjanjian sewa.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title-group">
+            <h2>Rekod Wang Cagaran / Deposit Sewa Sekali Sahaja</h2>
+            <p>Pengesahan bayaran deposit setiap individu dan simpanan amanah</p>
+          </div>
+          <button class="btn btn-primary" onclick="openDepositModal()">+ Tambah Rekod Deposit</button>
+        </div>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Nama Ahli</th>
+                <th>Jenis Cagaran</th>
+                <th>Jumlah Deposit (RM)</th>
+                <th>Tarikh Bayar</th>
+                <th>Status Serahan</th>
+                <th>Catatan / Syarat Tuan Rumah</th>
+                <th>Tindakan</th>
+              </tr>
+            </thead>
+            <tbody id="depositTableBody">
+              <!-- Populated via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="section-perbelanjaan" class="content-section">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title-group">
+            <h2>Senarai Perbelanjaan & Bil Bulan Terpilih</h2>
+            <p>Sewa bulanan, elektrik (TNB), air, internet, barang dapur & kos baik pulih</p>
+          </div>
+          <button class="btn btn-primary" onclick="openExpenseModal()">+ Rekod Bil / Belanja</button>
+        </div>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Kategori</th>
+                <th>Keterangan / Butiran</th>
+                <th>Tarikh Bil / Belanja</th>
+                <th>No. Resit / Rujukan</th>
+                <th>Jumlah (RM)</th>
+                <th>Kaedah Bahagi</th>
+                <th>Tindakan</th>
+              </tr>
+            </thead>
+            <tbody id="expensesTableBody">
+              <!-- Populated via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="section-bayaran" class="content-section">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title-group">
+            <h2>Rekod Kutipan & Bayaran Ahli</h2>
+            <p>Sejarah kemasukan wang sumbangan bulanan daripada ahli serumah</p>
+          </div>
+          <button class="btn btn-primary" onclick="openPaymentModal()">+ Rekod Bayaran Ahli</button>
+        </div>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Tarikh</th>
+                <th>Nama Ahli</th>
+                <th>Jumlah Bayaran (RM)</th>
+                <th>Kaedah Bayaran</th>
+                <th>No. Rujukan Pemindahan</th>
+                <th>Catatan</th>
+                <th>Tindakan</th>
+              </tr>
+            </thead>
+            <tbody id="paymentsTableBody">
+              <!-- Populated via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="section-laporan" class="content-section">
+      <div class="card no-print">
+        <div class="card-header">
+          <div class="card-title-group">
+            <h2>Penyata Bulanan Rumah Sewa (Sedia Cetak & Muat Turun)</h2>
+            <p>Dokumen rasmi lengkap untuk dibentangkan atau dikongsi dalam grup WhatsApp / cetakan fizikal</p>
+          </div>
+          <div style="display:flex; gap:0.5rem; flex-wrap: wrap;">
+            <button class="btn btn-secondary" onclick="copyReportText()">📋 Salin Teks WhatsApp</button>
+            <button class="btn btn-primary" onclick="window.print()">🖨️ Cetak / Simpan PDF</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="printable-report" id="printableReportCard">
+        <div class="report-header">
+          <div class="report-brand">
+            <h2>PENYATA KUTIPAN & PERBELANJAAN RUMAH SEWA</h2>
+            <p style="font-size: 0.85rem; color: #475569;" id="repAddress">Komuniti Rumah Sewa Harmoni</p>
+          </div>
+          <div class="report-meta">
+            <div>Bulan Sewaan: <strong id="repMonthText">Oktober 2026</strong></div>
+            <div>Tarikh Dijana: <strong id="repGeneratedDate">-</strong></div>
+            <div>Status: <span class="badge badge-success" id="repAuditStatus">Telah Diaudit</span></div>
+          </div>
+        </div>
+
+        <div class="report-summary-box">
+          <div class="report-summary-item">
+            <p>Jumlah Kos Bersama</p>
+            <h3 id="repTotalExpenses" style="color: #2563eb;">RM 0.00</h3>
+          </div>
+          <div class="report-summary-item">
+            <p>Jumlah Kutipan Diterima</p>
+            <h3 id="repTotalCollected" style="color: #059669;">RM 0.00</h3>
+          </div>
+          <div class="report-summary-item">
+            <p>Baki / (Tunggakan Bersih)</p>
+            <h3 id="repNetBalance" style="color: #d97706;">RM 0.00</h3>
+          </div>
+        </div>
+
+        <div class="report-section-title">1. Pecahan Perbelanjaan Bulanan</div>
+        <div class="report-table-wrapper">
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th>Bil</th>
+                <th>Kategori Perbelanjaan</th>
+                <th>Keterangan</th>
+                <th>Tarikh</th>
+                <th style="text-align: right;">Jumlah (RM)</th>
+              </tr>
+            </thead>
+            <tbody id="repExpensesList">
+              <!-- Populated via JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="report-section-title">2. Status Sumbangan & Pembayaran Setiap Ahli</div>
+        <div class="report-table-wrapper">
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th>Nama Ahli</th>
+                <th>Bilik</th>
+                <th style="text-align: right;">Perlu Bayar (RM)</th>
+                <th style="text-align: right;">Telah Bayar (RM)</th>
+                <th style="text-align: right;">Baki / Tunggakan (RM)</th>
+                <th>Status Bayaran</th>
+              </tr>
+            </thead>
+            <tbody id="repMembersList">
+              <!-- Populated via JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="report-section-title">3. Ringkasan Tabung Wang Cagaran (Deposit Boleh Dipulangkan)</div>
+        <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 0.5rem;">
+          * Nota Penting: Wang ini dipegang secara berasingan daripada perbelanjaan utiliti bulanan. Ia akan dipulangkan oleh pemilik rumah selepas ditolak sebarang kerosakan/tunggakan akhir mengikut syarat perjanjian sewaan.
+        </p>
+        <div class="report-table-wrapper">
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th>Ahli</th>
+                <th>Jenis Cagaran</th>
+                <th style="text-align: right;">Amaun Cagaran (RM)</th>
+                <th>Status Serahan</th>
+                <th>Catatan Perjanjian</th>
+              </tr>
+            </thead>
+            <tbody id="repDepositsList">
+              <!-- Populated via JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="signature-area">
+          <div class="signature-box">
+            Disediakan Oleh (Ketua Rumah / Bendahari):<br><br><br>
+            _______________________________<br>
+            Nama & Tarikh
+          </div>
+          <div class="signature-box">
+            Disahkan Oleh Wakil Ahli Rumah:<br><br><br>
+            _______________________________<br>
+            Nama & Tarikh
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL: Tambah/Kemaskini Ahli -->
+  <div class="modal-backdrop" id="memberModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="memberModalTitle">Tambah Ahli Rumah</h3>
+        <button class="modal-close" onclick="closeModal('memberModal')">&times;</button>
+      </div>
+      <form id="memberForm" onsubmit="saveMember(event)">
+        <input type="hidden" id="memberId">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="memberName">Nama Penuh *</label>
+            <input type="text" id="memberName" class="form-control" placeholder="Contoh: Muhammad Danish" required>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="memberPhone">No. Telefon / WhatsApp</label>
+              <input type="text" id="memberPhone" class="form-control" placeholder="012-3456789">
+            </div>
+            <div class="form-group">
+              <label for="memberRoom">Bilik / Kod Bilik</label>
+              <input type="text" id="memberRoom" class="form-control" placeholder="Bilik Utama / Bilik 2">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="memberJoinDate">Tarikh Masuk Sewa</label>
+              <input type="date" id="memberJoinDate" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="memberStatus">Status Penyewa</label>
+              <select id="memberStatus" class="form-control">
+                <option value="Aktif">Aktif (Sedang Menyewa)</option>
+                <option value="Keluar">Telah Berpindah Keluar</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('memberModal')">Batal</button>
+          <button type="submit" class="btn btn-primary">Simpan Ahli</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Tambah/Kemaskini Perbelanjaan Bulanan -->
+  <div class="modal-backdrop" id="expenseModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="expenseModalTitle">Rekod Perbelanjaan / Bil Bulanan</h3>
+        <button class="modal-close" onclick="closeModal('expenseModal')">&times;</button>
+      </div>
+      <form id="expenseForm" onsubmit="saveExpense(event)">
+        <input type="hidden" id="expenseId">
+        <div class="modal-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="expenseCategory">Kategori *</label>
+              <select id="expenseCategory" class="form-control" required>
+                <option value="Sewa Rumah">Sewa Rumah Bulanan</option>
+                <option value="Elektrik (TNB)">Bil Elektrik (TNB)</option>
+                <option value="Air (Utilisi)">Bil Air</option>
+                <option value="Internet / WiFi">Internet / WiFi (Unifi/Time)</option>
+                <option value="Barang Dapur / Asas">Barang Dapur & Kebersihan</option>
+                <option value="Penyelenggaraan">Penyelenggaraan & Baik Pulih</option>
+                <option value="Lain-lain">Lain-lain Kos Bersama</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="expenseAmount">Jumlah (RM) *</label>
+              <input type="number" step="0.01" min="0" id="expenseAmount" class="form-control" placeholder="0.00" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="expenseTitle">Keterangan / Butiran *</label>
+            <input type="text" id="expenseTitle" class="form-control" placeholder="Contoh: Sewa Oktober kepada En. Ahmad" required>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="expenseDate">Tarikh Bil / Bayaran *</label>
+              <input type="date" id="expenseDate" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label for="expenseRef">No. Resit / Rujukan</label>
+              <input type="text" id="expenseRef" class="form-control" placeholder="TNB-9281728 / JomPAY">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="expenseSplitMethod">Kaedah Agihan Kos</label>
+            <select id="expenseSplitMethod" class="form-control">
+              <option value="equal">Bahagi Sama Rata (Semua Ahli Aktif)</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('expenseModal')">Batal</button>
+          <button type="submit" class="btn btn-primary">Simpan Perbelanjaan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Tambah Rekod Bayaran Ahli -->
+  <div class="modal-backdrop" id="paymentModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="paymentModalTitle">Rekod Bayaran Sumbangan Ahli</h3>
+        <button class="modal-close" onclick="closeModal('paymentModal')">&times;</button>
+      </div>
+      <form id="paymentForm" onsubmit="savePayment(event)">
+        <input type="hidden" id="paymentId">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="paymentMemberId">Pilih Ahli *</label>
+            <select id="paymentMemberId" class="form-control" required>
+              <!-- Options populated dynamically -->
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="paymentAmount">Jumlah Dibayar (RM) *</label>
+              <input type="number" step="0.01" min="0" id="paymentAmount" class="form-control" placeholder="0.00" required>
+            </div>
+            <div class="form-group">
+              <label for="paymentDate">Tarikh Bayar *</label>
+              <input type="date" id="paymentDate" class="form-control" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="paymentMethod">Kaedah Pembayaran</label>
+              <select id="paymentMethod" class="form-control">
+                <option value="DuitNow / Online Transfer">DuitNow / Online Transfer</option>
+                <option value="Duit Tunai (Cash)">Duit Tunai (Cash)</option>
+                <option value="TNG eWallet">TNG eWallet</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="paymentRef">No. Rujukan / Resit</label>
+              <input type="text" id="paymentRef" class="form-control" placeholder="Ref: 20261010-891">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="paymentNotes">Catatan / Catatan Tambahan</label>
+            <input type="text" id="paymentNotes" class="form-control" placeholder="Selesai sewa & utiliti">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('paymentModal')">Batal</button>
+          <button type="submit" class="btn btn-primary">Simpan Bayaran</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Tambah Rekod Deposit Berasingan -->
+  <div class="modal-backdrop" id="depositModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="depositModalTitle">Rekod Wang Deposit / Cagaran Rumah</h3>
+        <button class="modal-close" onclick="closeModal('depositModal')">&times;</button>
+      </div>
+      <form id="depositForm" onsubmit="saveDeposit(event)">
+        <input type="hidden" id="depositId">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="depositMemberId">Nama Ahli *</label>
+            <select id="depositMemberId" class="form-control" required>
+              <!-- Populated dynamically -->
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="depositType">Jenis Cagaran *</label>
+              <select id="depositType" class="form-control" required>
+                <option value="Cagaran Sewa (2 Bulan)">Cagaran Sewa (2 Bulan)</option>
+                <option value="Cagaran Sewa (1 Bulan)">Cagaran Sewa (1 Bulan)</option>
+                <option value="Cagaran Utiliti (Elektrik/Air)">Cagaran Utiliti (Elektrik/Air)</option>
+                <option value="Cagaran Kunci & Akses Kad">Cagaran Kunci & Kad Akses</option>
+                <option value="Lain-lain Deposit">Lain-lain Deposit Keselamatan</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="depositAmount">Amaun Deposit (RM) *</label>
+              <input type="number" step="0.01" min="0" id="depositAmount" class="form-control" placeholder="0.00" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="depositDate">Tarikh Pembayaran Deposit</label>
+              <input type="date" id="depositDate" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="depositStatus">Status Pegangan</label>
+              <select id="depositStatus" class="form-control">
+                <option value="Diserahkan Kepada Owner">Diserahkan Kepada Tuan Rumah (Dipegang Pemilik)</option>
+                <option value="Dipegang Bendahari">Dipegang Tabung Amanah Rumah</option>
+                <option value="Telah Dipulangkan">Telah Dipulangkan Kepada Ahli</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="depositNotes">Syarat Pemulangan / Catatan Kontrak</label>
+            <textarea id="depositNotes" class="form-control" rows="2" placeholder="Boleh dituntut penuh jika tiada tunggakan dan notis 2 bulan diberikan"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('depositModal')">Batal</button>
+          <button type="submit" class="btn btn-primary">Simpan Rekod Deposit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <script>
+    const STORAGE_KEY = 'member_expense_system_v1';
+
+    // Mock initial data if storage is empty
+    const defaultData = {
+      houseName: "Rumah Sewa Harmoni, Blok B-12-03",
+      members: [
+        { id: 'm1', name: 'Zulhelmi (Ketua)', phone: '011-2345678', room: 'Master Room', joinDate: '2026-01-01', status: 'Aktif' },
+        { id: 'm2', name: 'Afiq Farhan', phone: '017-9876543', room: 'Bilik Tengah 1', joinDate: '2026-02-01', status: 'Aktif' },
+        { id: 'm3', name: 'Imran Hakimi', phone: '013-4455667', room: 'Bilik Tengah 2', joinDate: '2026-03-01', status: 'Aktif' },
+        { id: 'm4', name: 'Haziq Rayyan', phone: '019-3322110', room: 'Bilik Kecil', joinDate: '2026-05-01', status: 'Aktif' }
+      ],
+      deposits: [
+        { id: 'd1', memberId: 'm1', type: 'Cagaran Sewa (2 Bulan)', amount: 700.00, date: '2026-01-01', status: 'Diserahkan Kepada Owner', notes: 'Tertakluk pemeriksaan kebersihan bilik' },
+        { id: 'd2', memberId: 'm2', type: 'Cagaran Sewa (2 Bulan)', amount: 600.00, date: '2026-02-01', status: 'Diserahkan Kepada Owner', notes: 'Resit dipegang oleh Zulhelmi' },
+        { id: 'd3', memberId: 'm3', type: 'Cagaran Sewa (2 Bulan)', amount: 600.00, date: '2026-03-01', status: 'Diserahkan Kepada Owner', notes: 'Resit dipegang oleh Zulhelmi' },
+        { id: 'd4', memberId: 'm4', type: 'Cagaran Sewa (2 Bulan)', amount: 500.00, date: '2026-05-01', status: 'Diserahkan Kepada Owner', notes: 'Kadar bilik kecil' },
+        { id: 'd5', memberId: 'm1', type: 'Cagaran Utiliti (Elektrik/Air)', amount: 150.00, date: '2026-01-01', status: 'Diserahkan Kepada Owner', notes: 'Cagaran TNB & Air' },
+        { id: 'd6', memberId: 'm2', type: 'Cagaran Utiliti (Elektrik/Air)', amount: 150.00, date: '2026-02-01', status: 'Diserahkan Kepada Owner', notes: 'Cagaran TNB & Air' },
+        { id: 'd7', memberId: 'm3', type: 'Cagaran Utiliti (Elektrik/Air)', amount: 150.00, date: '2026-03-01', status: 'Diserahkan Kepada Owner', notes: 'Cagaran TNB & Air' },
+        { id: 'd8', memberId: 'm4', type: 'Cagaran Utiliti (Elektrik/Air)', amount: 150.00, date: '2026-05-01', status: 'Diserahkan Kepada Owner', notes: 'Cagaran TNB & Air' }
+      ],
+      expenses: [
+        { id: 'e1', month: '2026-10', category: 'Sewa Rumah', title: 'Sewa Rumah Oktober 2026', amount: 1400.00, date: '2026-10-01', ref: 'MBB-291829', splitMethod: 'equal' },
+        { id: 'e2', month: '2026-10', category: 'Elektrik (TNB)', title: 'Bil Elektrik TNB Oktober', amount: 156.40, date: '2026-10-05', ref: 'TNB-54129', splitMethod: 'equal' },
+        { id: 'e3', month: '2026-10', category: 'Air (Utilisi)', title: 'Bil Air Syabas / Air Selangor', amount: 28.50, date: '2026-10-06', ref: 'AIR-9921', splitMethod: 'equal' },
+        { id: 'e4', month: '2026-10', category: 'Internet / WiFi', title: 'Unifi Fibre 300Mbps', amount: 139.00, date: '2026-10-08', ref: 'TM-019284', splitMethod: 'equal' },
+        { id: 'e5', month: '2026-10', category: 'Barang Dapur / Asas', title: 'Sabun basuh, span, plastik sampah Lotus', amount: 48.00, date: '2026-10-09', ref: 'LOTUS-3829', splitMethod: 'equal' }
+      ],
+      payments: [
+        { id: 'p1', month: '2026-10', memberId: 'm1', amount: 442.98, date: '2026-10-02', method: 'DuitNow / Online Transfer', ref: 'DUITNOW-01', notes: 'Selesai bahagian Zulhelmi' },
+        { id: 'p2', month: '2026-10', memberId: 'm2', amount: 442.98, date: '2026-10-03', method: 'DuitNow / Online Transfer', ref: 'DUITNOW-02', notes: 'Selesai bahagian Afiq' },
+        { id: 'p3', month: '2026-10', memberId: 'm3', amount: 300.00, date: '2026-10-07', method: 'TNG eWallet', ref: 'TNG-9281', notes: 'Bayar sebahagian dahulu' }
+      ]
+    };
+
+    let appData = loadAppData();
+    let selectedMonth = '2026-10';
+
+    function loadAppData() {
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+          return JSON.parse(stored);
+        }
+      } catch (e) {
+        console.error("Gagal memuat turun data localStorage:", e);
+      }
+      return defaultData;
+    }
+
+    function saveAppData() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+      } catch (e) {
+        console.error("Gagal menyimpan data:", e);
+        showToast("Ralat menyimpan data ke storan setempat!", "error");
+      }
+    }
+
+    function formatRM(num) {
+      const val = parseFloat(num) || 0;
+      return 'RM ' + val.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function getMonthNameMalay(yearMonth) {
+      if (!yearMonth) return '';
+      const [year, month] = yearMonth.split('-');
+      const monthsMalay = [
+        'Januari', 'Februari', 'Mac', 'April', 'Mei', 'Jun',
+        'Julai', 'Ogos', 'September', 'Oktober', 'November', 'Disember'
+      ];
+      const mIdx = parseInt(month, 10) - 1;
+      return `${monthsMalay[mIdx] || month} ${year}`;
+    }
+
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      
+      let icon = '✅';
+      if (type === 'error') icon = '⚠️';
+      if (type === 'info') icon = 'ℹ️';
+
+      toast.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    function switchTab(tabId) {
+      const sections = document.querySelectorAll('.content-section');
+      const tabs = document.querySelectorAll('.tab-btn');
+
+      sections.forEach(s => s.classList.remove('active'));
+      tabs.forEach(t => t.classList.remove('active'));
+
+      const activeSection = document.getElementById(`section-${tabId}`);
+      if (activeSection) activeSection.classList.add('active');
+
+      const activeBtn = Array.from(tabs).find(btn => btn.getAttribute('onclick')?.includes(`'${tabId}'`));
+      if (activeBtn) activeBtn.classList.add('active');
+
+      // Refresh specific views
+      if (tabId === 'laporan') {
+        renderPrintableReport();
+      }
+    }
+
+    function calculateFinancials(monthStr) {
+      const activeMembers = appData.members.filter(m => m.status === 'Aktif');
+      const activeCount = activeMembers.length || 1;
+
+      // Expenses for month
+      const monthExpenses = appData.expenses.filter(e => e.month === monthStr);
+      const totalExpenseAmount = monthExpenses.reduce((sum, item) => sum + Number(item.amount), 0);
+
+      // Payments made for month
+      const monthPayments = appData.payments.filter(p => p.month === monthStr);
+      const totalPaidAmount = monthPayments.reduce((sum, item) => sum + Number(item.amount), 0);
+
+      // Per-member share
+      const equalShare = totalExpenseAmount / activeCount;
+
+      // Calculate member specific balances
+      const memberFinancials = activeMembers.map(member => {
+        const memberPayments = monthPayments.filter(p => p.memberId === member.id);
+        const paid = memberPayments.reduce((sum, p) => sum + Number(p.amount), 0);
+        const required = equalShare;
+        const diff = paid - required; // negative = tunggakan, positive = lebihan
+        return {
+          member,
+          required,
+          paid,
+          diff,
+          isSettled: diff >= -0.05 // account for rounding precision
+        };
+      });
+
+      const totalArrears = memberFinancials.reduce((sum, m) => {
+        return m.diff < 0 ? sum + Math.abs(m.diff) : sum;
+      }, 0);
+
+      // Total refundable deposit pool
+      const totalDepositPool = appData.deposits
+        .filter(d => d.status !== 'Telah Dipulangkan')
+        .reduce((sum, d) => sum + Number(d.amount), 0);
+
+      return {
+        activeMembers,
+        monthExpenses,
+        totalExpenseAmount,
+        monthPayments,
+        totalPaidAmount,
+        equalShare,
+        memberFinancials,
+        totalArrears,
+        totalDepositPool
+      };
+    }
+
+    function renderApp() {
+      const fin = calculateFinancials(selectedMonth);
+
+      // Update stat cards
+      document.getElementById('statCollected').textContent = formatRM(fin.totalPaidAmount);
+      document.getElementById('statCollectedDesc').textContent = `${fin.monthPayments.length} transaksi kutipan`;
+
+      document.getElementById('statExpenses').textContent = formatRM(fin.totalExpenseAmount);
+      document.getElementById('statExpensesDesc').textContent = `${fin.monthExpenses.length} bil/perbelanjaan`;
+
+      document.getElementById('statArrears').textContent = formatRM(fin.totalArrears);
+      document.getElementById('statArrearsDesc').textContent = fin.totalArrears > 0 ? 'Tunggakan belum dijelaskan' : 'Semua ahli selesai bayar';
+
+      document.getElementById('statDepositPool').textContent = formatRM(fin.totalDepositPool);
+
+      document.getElementById('dashboardMonthLabel').textContent = 
+        `Penyata kos sewa & utiliti bagi ${getMonthNameMalay(selectedMonth)} (Kadar seorang: ${formatRM(fin.equalShare)})`;
+
+      // Render Dashboard Table
+      const summaryTbody = document.getElementById('dashboardMemberSummaryBody');
+      summaryTbody.innerHTML = '';
+
+      if (fin.memberFinancials.length === 0) {
+        summaryTbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color: var(--text-dim); padding: 2rem;">Tiada ahli aktif didaftarkan. Sila tambah ahli dalam tab "Senarai Ahli".</td></tr>`;
+      } else {
+        fin.memberFinancials.forEach(item => {
+          const tr = document.createElement('tr');
+          let statusBadge = '';
+          if (item.isSettled) {
+            statusBadge = `<span class="badge badge-success">✓ Selesai (${formatRM(item.paid)})</span>`;
+          } else {
+            statusBadge = `<span class="badge badge-danger">Tunggakan: ${formatRM(Math.abs(item.diff))}</span>`;
+          }
+
+          tr.innerHTML = `
+            <td><strong>${escapeHtml(item.member.name)}</strong></td>
+            <td><span class="badge badge-neutral">${escapeHtml(item.member.room || 'Bilik Am')}</span></td>
+            <td class="money">${formatRM(item.required)}</td>
+            <td class="money" style="color: #34d399;">${formatRM(item.paid)}</td>
+            <td>${statusBadge}</td>
+            <td>
+              <button class="btn btn-outline btn-sm" onclick="quickPayForMember('${item.member.id}', ${Math.max(0, item.required - item.paid).toFixed(2)})">
+                + Bayar
+              </button>
+            </td>
+          `;
+          summaryTbody.appendChild(tr);
+        });
+      }
+
+      // Render Sections
+      renderMembersTable();
+      renderDepositsTable();
+      renderExpensesTable(fin.monthExpenses);
+      renderPaymentsTable(fin.monthPayments);
+      renderPrintableReport();
+    }
+
+    function renderMembersTable() {
+      const tbody = document.getElementById('membersTableBody');
+      tbody.innerHTML = '';
+
+      if (appData.members.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 2rem; color: var(--text-dim);">Tiada ahli didaftarkan.</td></tr>`;
+        return;
+      }
+
+      appData.members.forEach(member => {
+        const tr = document.createElement('tr');
+        const statusBadge = member.status === 'Aktif'
+          ? `<span class="badge badge-success">Aktif</span>`
+          : `<span class="badge badge-neutral">Keluar</span>`;
+
+        tr.innerHTML = `
+          <td><strong>${escapeHtml(member.name)}</strong></td>
+          <td>${escapeHtml(member.phone || '-')}</td>
+          <td><span class="badge badge-info">${escapeHtml(member.room || '-')}</span></td>
+          <td>${statusBadge}</td>
+          <td>${member.joinDate || '-'}</td>
+          <td>
+            <div style="display:flex; gap:0.35rem;">
+              <button class="btn btn-outline btn-sm" onclick="editMember('${member.id}')">Kemaskini</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteMember('${member.id}')">Padam</button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      // Update Member Select dropdowns in other modals
+      updateMemberSelectDropdowns();
+    }
+
+    function updateMemberSelectDropdowns() {
+      const paymentSelect = document.getElementById('paymentMemberId');
+      const depositSelect = document.getElementById('depositMemberId');
+
+      const optionsHtml = appData.members
+        .filter(m => m.status === 'Aktif')
+        .map(m => `<option value="${m.id}">${escapeHtml(m.name)} (${escapeHtml(m.room || 'Bilik')})</option>`)
+        .join('');
+
+      if (paymentSelect) paymentSelect.innerHTML = optionsHtml;
+      if (depositSelect) depositSelect.innerHTML = optionsHtml;
+    }
+
+    function openMemberModal(id = null) {
+      const form = document.getElementById('memberForm');
+      form.reset();
+      document.getElementById('memberId').value = '';
+
+      if (id) {
+        const member = appData.members.find(m => m.id === id);
+        if (member) {
+          document.getElementById('memberId').value = member.id;
+          document.getElementById('memberName').value = member.name;
+          document.getElementById('memberPhone').value = member.phone || '';
+          document.getElementById('memberRoom').value = member.room || '';
+          document.getElementById('memberJoinDate').value = member.joinDate || '';
+          document.getElementById('memberStatus').value = member.status || 'Aktif';
+          document.getElementById('memberModalTitle').textContent = 'Kemaskini Maklumat Ahli';
+        }
+      } else {
+        document.getElementById('memberModalTitle').textContent = 'Tambah Ahli Rumah';
+        document.getElementById('memberJoinDate').value = new Date().toISOString().split('T')[0];
+      }
+
+      openModal('memberModal');
+    }
+
+    function editMember(id) {
+      openMemberModal(id);
+    }
+
+    function deleteMember(id) {
+      const member = appData.members.find(m => m.id === id);
+      if (!member) return;
+
+      if (confirmDialog(`Adakah anda pasti ingin memadam ahli "${member.name}"? Segala rekod bayaran dan deposit berkaitan akan kekal disimpan.`)) {
+        appData.members = appData.members.filter(m => m.id !== id);
+        saveAppData();
+        renderApp();
+        showToast(`Ahli ${member.name} telah berjaya dipadam.`, 'info');
+      }
+    }
+
+    function saveMember(e) {
+      e.preventDefault();
+      const id = document.getElementById('memberId').value;
+      const name = document.getElementById('memberName').value.trim();
+      const phone = document.getElementById('memberPhone').value.trim();
+      const room = document.getElementById('memberRoom').value.trim();
+      const joinDate = document.getElementById('memberJoinDate').value;
+      const status = document.getElementById('memberStatus').value;
+
+      if (!name) return;
+
+      if (id) {
+        // Edit
+        const idx = appData.members.findIndex(m => m.id === id);
+        if (idx !== -1) {
+          appData.members[idx] = { ...appData.members[idx], name, phone, room, joinDate, status };
+          showToast(`Maklumat ${name} dikemaskini.`);
+        }
+      } else {
+        // Create
+        const newMember = {
+          id: 'm_' + Date.now(),
+          name,
+          phone,
+          room,
+          joinDate,
+          status
+        };
+        appData.members.push(newMember);
+        showToast(`Ahli baru ${name} didaftarkan.`);
+      }
+
+      saveAppData();
+      closeModal('memberModal');
+      renderApp();
+    }
+
+    function renderDepositsTable() {
+      const tbody = document.getElementById('depositTableBody');
+      tbody.innerHTML = '';
+
+      if (appData.deposits.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 2rem; color: var(--text-dim);">Tiada rekod cagaran/deposit. Sila tambah rekod baru.</td></tr>`;
+        return;
+      }
+
+      appData.deposits.forEach(dep => {
+        const member = appData.members.find(m => m.id === dep.memberId);
+        const memberName = member ? member.name : 'Bekas Ahli';
+        const tr = document.createElement('tr');
+
+        let statusClass = 'badge-success';
+        if (dep.status === 'Telah Dipulangkan') statusClass = 'badge-neutral';
+        if (dep.status === 'Dipegang Bendahari') statusClass = 'badge-warning';
+
+        tr.innerHTML = `
+          <td><strong>${escapeHtml(memberName)}</strong></td>
+          <td><span class="badge badge-info">${escapeHtml(dep.type)}</span></td>
+          <td class="money">${formatRM(dep.amount)}</td>
+          <td>${dep.date || '-'}</td>
+          <td><span class="badge ${statusClass}">${escapeHtml(dep.status)}</span></td>
+          <td style="font-size:0.8rem; color:var(--text-muted);">${escapeHtml(dep.notes || '-')}</td>
+          <td>
+            <div style="display:flex; gap:0.35rem;">
+              <button class="btn btn-outline btn-sm" onclick="editDeposit('${dep.id}')">Edit</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteDeposit('${dep.id}')">Padam</button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function openDepositModal(id = null) {
+      const form = document.getElementById('depositForm');
+      form.reset();
+      document.getElementById('depositId').value = '';
+
+      if (id) {
+        const dep = appData.deposits.find(d => d.id === id);
+        if (dep) {
+          document.getElementById('depositId').value = dep.id;
+          document.getElementById('depositMemberId').value = dep.memberId;
+          document.getElementById('depositType').value = dep.type;
+          document.getElementById('depositAmount').value = dep.amount;
+          document.getElementById('depositDate').value = dep.date || '';
+          document.getElementById('depositStatus').value = dep.status;
+          document.getElementById('depositNotes').value = dep.notes || '';
+          document.getElementById('depositModalTitle').textContent = 'Kemaskini Rekod Deposit';
+        }
+      } else {
+        document.getElementById('depositModalTitle').textContent = 'Rekod Wang Deposit / Cagaran';
+        document.getElementById('depositDate').value = new Date().toISOString().split('T')[0];
+      }
+
+      openModal('depositModal');
+    }
+
+    function editDeposit(id) {
+      openDepositModal(id);
+    }
+
+    function deleteDeposit(id) {
+      const dep = appData.deposits.find(d => d.id === id);
+      if (!dep) return;
+
+      if (confirmDialog(`Padam rekod deposit berjumlah ${formatRM(dep.amount)}?`)) {
+        appData.deposits = appData.deposits.filter(d => d.id !== id);
+        saveAppData();
+        renderApp();
+        showToast("Rekod deposit berjaya dipadam.", "info");
+      }
+    }
+
+    function saveDeposit(e) {
+      e.preventDefault();
+      const id = document.getElementById('depositId').value;
+      const memberId = document.getElementById('depositMemberId').value;
+      const type = document.getElementById('depositType').value;
+      const amount = parseFloat(document.getElementById('depositAmount').value) || 0;
+      const date = document.getElementById('depositDate').value;
+      const status = document.getElementById('depositStatus').value;
+      const notes = document.getElementById('depositNotes').value.trim();
+
+      if (!memberId || amount <= 0) {
+        showToast("Sila pastikan ahli dipilih dan amaun adalah sah.", "error");
+        return;
+      }
+
+      if (id) {
+        const idx = appData.deposits.findIndex(d => d.id === id);
+        if (idx !== -1) {
+          appData.deposits[idx] = { id, memberId, type, amount, date, status, notes };
+          showToast("Rekod cagaran berjaya dikemaskini.");
+        }
+      } else {
+        appData.deposits.push({
+          id: 'd_' + Date.now(),
+          memberId,
+          type,
+          amount,
+          date,
+          status,
+          notes
+        });
+        showToast("Deposit cagaran berjaya direkodkan!");
+      }
+
+      saveAppData();
+      closeModal('depositModal');
+      renderApp();
+    }
+
+    function renderExpensesTable(expenses) {
+      const tbody = document.getElementById('expensesTableBody');
+      tbody.innerHTML = '';
+
+      if (!expenses || expenses.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 2rem; color: var(--text-dim);">Tiada rekod bil/perbelanjaan bagi bulan ini (${getMonthNameMalay(selectedMonth)}).</td></tr>`;
+        return;
+      }
+
+      expenses.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><span class="badge badge-info">${escapeHtml(item.category)}</span></td>
+          <td>
+            <strong>${escapeHtml(item.title)}</strong>
+          </td>
+          <td>${item.date || '-'}</td>
+          <td><code style="font-size:0.75rem; color:#94a3b8;">${escapeHtml(item.ref || '-')}</code></td>
+          <td class="money" style="color: #60a5fa;">${formatRM(item.amount)}</td>
+          <td><span class="badge badge-neutral">Sama Rata</span></td>
+          <td>
+            <div style="display:flex; gap:0.35rem;">
+              <button class="btn btn-outline btn-sm" onclick="editExpense('${item.id}')">Edit</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteExpense('${item.id}')">Padam</button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function openExpenseModal(id = null) {
+      const form = document.getElementById('expenseForm');
+      form.reset();
+      document.getElementById('expenseId').value = '';
+
+      if (id) {
+        const item = appData.expenses.find(e => e.id === id);
+        if (item) {
+          document.getElementById('expenseId').value = item.id;
+          document.getElementById('expenseCategory').value = item.category;
+          document.getElementById('expenseTitle').value = item.title;
+          document.getElementById('expenseAmount').value = item.amount;
+          document.getElementById('expenseDate').value = item.date;
+          document.getElementById('expenseRef').value = item.ref || '';
+          document.getElementById('expenseSplitMethod').value = item.splitMethod || 'equal';
+          document.getElementById('expenseModalTitle').textContent = 'Kemaskini Perbelanjaan Bulanan';
+        }
+      } else {
+        document.getElementById('expenseModalTitle').textContent = 'Rekod Perbelanjaan / Bil Bulanan';
+        // default to current month date
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('expenseDate').value = today.startsWith(selectedMonth) ? today : `${selectedMonth}-01`;
+      }
+
+      openModal('expenseModal');
+    }
+
+    function editExpense(id) {
+      openExpenseModal(id);
+    }
+
+    function deleteExpense(id) {
+      const item = appData.expenses.find(e => e.id === id);
+      if (!item) return;
+
+      if (confirmDialog(`Padam bil "${item.title}" berjumlah ${formatRM(item.amount)}?`)) {
+        appData.expenses = appData.expenses.filter(e => e.id !== id);
+        saveAppData();
+        renderApp();
+        showToast("Perbelanjaan telah dipadam.", "info");
+      }
+    }
+
+    function saveExpense(e) {
+      e.preventDefault();
+      const id = document.getElementById('expenseId').value;
+      const category = document.getElementById('expenseCategory').value;
+      const title = document.getElementById('expenseTitle').value.trim();
+      const amount = parseFloat(document.getElementById('expenseAmount').value) || 0;
+      const date = document.getElementById('expenseDate').value;
+      const ref = document.getElementById('expenseRef').value.trim();
+      const splitMethod = document.getElementById('expenseSplitMethod').value;
+
+      if (!title || amount <= 0 || !date) {
+        showToast("Sila lengkapkan butiran perbelanjaan yang sah.", "error");
+        return;
+      }
+
+      // Assign to month of date
+      const month = date.substring(0, 7);
+
+      if (id) {
+        const idx = appData.expenses.findIndex(e => e.id === id);
+        if (idx !== -1) {
+          appData.expenses[idx] = { id, month, category, title, amount, date, ref, splitMethod };
+          showToast(`Perbelanjaan "${title}" dikemaskini.`);
+        }
+      } else {
+        appData.expenses.push({
+          id: 'e_' + Date.now(),
+          month,
+          category,
+          title,
+          amount,
+          date,
+          ref,
+          splitMethod
+        });
+        showToast(`Bil "${title}" berjaya disimpan.`);
+      }
+
+      saveAppData();
+      closeModal('expenseModal');
+      renderApp();
+    }
+
+    function renderPaymentsTable(payments) {
+      const tbody = document.getElementById('paymentsTableBody');
+      tbody.innerHTML = '';
+
+      if (!payments || payments.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 2rem; color: var(--text-dim);">Tiada kutipan/bayaran direkodkan bagi ${getMonthNameMalay(selectedMonth)}.</td></tr>`;
+        return;
+      }
+
+      payments.forEach(p => {
+        const member = appData.members.find(m => m.id === p.memberId);
+        const name = member ? member.name : 'Bekas Ahli';
+        const tr = document.createElement('tr');
+
+        tr.innerHTML = `
+          <td>${p.date || '-'}</td>
+          <td><strong>${escapeHtml(name)}</strong></td>
+          <td class="money" style="color: #34d399;">${formatRM(p.amount)}</td>
+          <td><span class="badge badge-info">${escapeHtml(p.method || 'Online Transfer')}</span></td>
+          <td><code style="font-size:0.75rem; color:#94a3b8;">${escapeHtml(p.ref || '-')}</code></td>
+          <td style="font-size:0.8rem; color:var(--text-muted);">${escapeHtml(p.notes || '-')}</td>
+          <td>
+            <div style="display:flex; gap:0.35rem;">
+              <button class="btn btn-outline btn-sm" onclick="editPayment('${p.id}')">Edit</button>
+              <button class="btn btn-danger btn-sm" onclick="deletePayment('${p.id}')">Padam</button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function openPaymentModal(id = null) {
+      const form = document.getElementById('paymentForm');
+      form.reset();
+      document.getElementById('paymentId').value = '';
+
+      if (id) {
+        const p = appData.payments.find(item => item.id === id);
+        if (p) {
+          document.getElementById('paymentId').value = p.id;
+          document.getElementById('paymentMemberId').value = p.memberId;
+          document.getElementById('paymentAmount').value = p.amount;
+          document.getElementById('paymentDate').value = p.date;
+          document.getElementById('paymentMethod').value = p.method || 'DuitNow / Online Transfer';
+          document.getElementById('paymentRef').value = p.ref || '';
+          document.getElementById('paymentNotes').value = p.notes || '';
+          document.getElementById('paymentModalTitle').textContent = 'Kemaskini Bayaran Ahli';
+        }
+      } else {
+        document.getElementById('paymentModalTitle').textContent = 'Rekod Bayaran Sumbangan Ahli';
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('paymentDate').value = today.startsWith(selectedMonth) ? today : `${selectedMonth}-01`;
+      }
+
+      openModal('paymentModal');
+    }
+
+    function quickPayForMember(memberId, suggestedAmount) {
+      openPaymentModal();
+      document.getElementById('paymentMemberId').value = memberId;
+      if (suggestedAmount > 0) {
+        document.getElementById('paymentAmount').value = suggestedAmount;
+      }
+    }
+
+    function editPayment(id) {
+      openPaymentModal(id);
+    }
+
+    function deletePayment(id) {
+      const p = appData.payments.find(item => item.id === id);
+      if (!p) return;
+
+      if (confirmDialog(`Padam rekod bayaran ${formatRM(p.amount)}?`)) {
+        appData.payments = appData.payments.filter(item => item.id !== id);
+        saveAppData();
+        renderApp();
+        showToast("Rekod bayaran telah dipadam.", "info");
+      }
+    }
+
+    function savePayment(e) {
+      e.preventDefault();
+      const id = document.getElementById('paymentId').value;
+      const memberId = document.getElementById('paymentMemberId').value;
+      const amount = parseFloat(document.getElementById('paymentAmount').value) || 0;
+      const date = document.getElementById('paymentDate').value;
+      const method = document.getElementById('paymentMethod').value;
+      const ref = document.getElementById('paymentRef').value.trim();
+      const notes = document.getElementById('paymentNotes').value.trim();
+
+      if (!memberId || amount <= 0 || !date) {
+        showToast("Sila lengkapkan maklumat bayaran dengan tepat.", "error");
+        return;
+      }
+
+      const month = date.substring(0, 7);
+
+      if (id) {
+        const idx = appData.payments.findIndex(item => item.id === id);
+        if (idx !== -1) {
+          appData.payments[idx] = { id, month, memberId, amount, date, method, ref, notes };
+          showToast("Bayaran dikemaskini.");
+        }
+      } else {
+        appData.payments.push({
+          id: 'p_' + Date.now(),
+          month,
+          memberId,
+          amount,
+          date,
+          method,
+          ref,
+          notes
+        });
+        showToast("Bayaran ahli berjaya disimpan!");
+      }
+
+      saveAppData();
+      closeModal('paymentModal');
+      renderApp();
+    }
+
+    function renderPrintableReport() {
+      const fin = calculateFinancials(selectedMonth);
+
+      document.getElementById('repMonthText').textContent = getMonthNameMalay(selectedMonth);
+      document.getElementById('repGeneratedDate').textContent = new Date().toLocaleDateString('ms-MY', {
+        day: 'numeric', month: 'long', year: 'numeric'
+      });
+
+      document.getElementById('repTotalExpenses').textContent = formatRM(fin.totalExpenseAmount);
+      document.getElementById('repTotalCollected').textContent = formatRM(fin.totalPaidAmount);
+
+      const netBalance = fin.totalPaidAmount - fin.totalExpenseAmount;
+      const netElem = document.getElementById('repNetBalance');
+      netElem.textContent = formatRM(netBalance);
+      if (netBalance >= 0) {
+        netElem.style.color = '#059669';
+      } else {
+        netElem.style.color = '#dc2626';
+      }
+
+      // 1. Expenses in report
+      const expList = document.getElementById('repExpensesList');
+      expList.innerHTML = '';
+      if (fin.monthExpenses.length === 0) {
+        expList.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#64748b;">Tiada perbelanjaan direkodkan untuk bulan ini.</td></tr>`;
+      } else {
+        fin.monthExpenses.forEach((item, index) => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td style="width: 40px;">${index + 1}</td>
+            <td><strong>${escapeHtml(item.category)}</strong></td>
+            <td>${escapeHtml(item.title)} ${item.ref ? '(' + escapeHtml(item.ref) + ')' : ''}</td>
+            <td>${item.date}</td>
+            <td style="text-align: right; font-family: monospace; font-weight:600;">${formatRM(item.amount)}</td>
+          `;
+          expList.appendChild(tr);
+        });
+      }
+
+      // 2. Member contributions in report
+      const memList = document.getElementById('repMembersList');
+      memList.innerHTML = '';
+      fin.memberFinancials.forEach(item => {
+        const tr = document.createElement('tr');
+        const statusText = item.isSettled ? '<span style="color:#059669; font-weight:700;">✓ SELESAI</span>' : '<span style="color:#dc2626; font-weight:700;">⚠️ TUNGGAKAN</span>';
+        
+        tr.innerHTML = `
+          <td><strong>${escapeHtml(item.member.name)}</strong></td>
+          <td>${escapeHtml(item.member.room || 'Bilik')}</td>
+          <td style="text-align: right; font-family: monospace;">${formatRM(item.required)}</td>
+          <td style="text-align: right; font-family: monospace; color:#059669;">${formatRM(item.paid)}</td>
+          <td style="text-align: right; font-family: monospace; font-weight:700; color:${item.diff < 0 ? '#dc2626' : '#059669'};">
+            ${item.diff < 0 ? '-' + formatRM(Math.abs(item.diff)) : formatRM(item.diff)}
+          </td>
+          <td>${statusText}</td>
+        `;
+        memList.appendChild(tr);
+      });
+
+      // 3. Deposit summary in report
+      const depList = document.getElementById('repDepositsList');
+      depList.innerHTML = '';
+      if (appData.deposits.length === 0) {
+        depList.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#64748b;">Tiada rekod deposit direkodkan.</td></tr>`;
+      } else {
+        appData.deposits.forEach(dep => {
+          const member = appData.members.find(m => m.id === dep.memberId);
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td><strong>${escapeHtml(member ? member.name : 'Penyewa')}</strong></td>
+            <td>${escapeHtml(dep.type)}</td>
+            <td style="text-align: right; font-family: monospace; font-weight: 600;">${formatRM(dep.amount)}</td>
+            <td>${escapeHtml(dep.status)}</td>
+            <td style="font-size:0.75rem; color:#475569;">${escapeHtml(dep.notes || '-')}</td>
+          `;
+          depList.appendChild(tr);
+        });
+      }
+    }
+
+    function copyReportText() {
+      const fin = calculateFinancials(selectedMonth);
+      let text = `📢 *PENYATA KUTIPAN RUMAH SEWA (${getMonthNameMalay(selectedMonth).toUpperCase()})*\n`;
+      text += `--------------------------------------\n`;
+      text += `🏢 ${appData.houseName}\n`;
+      text += `💰 *Jumlah Kos Bulanan:* ${formatRM(fin.totalExpenseAmount)}\n`;
+      text += `👥 *Kadar Setiap Ahli (${fin.activeMembers.length} Orang):* ${formatRM(fin.equalShare)}\n\n`;
+
+      text += `🧾 *Pecahan Bil & Kos:*\n`;
+      fin.monthExpenses.forEach(e => {
+        text += `• ${e.category} (${e.title}): ${formatRM(e.amount)}\n`;
+      });
+
+      text += `\n📌 *Status Bayaran Ahli:*\n`;
+      fin.memberFinancials.forEach(m => {
+        const icon = m.isSettled ? '✅' : '❌';
+        const note = m.isSettled ? 'Lunas' : `Tunggakan ${formatRM(Math.abs(m.diff))}`;
+        text += `${icon} ${m.member.name} (${m.member.room || 'Bilik'}): ${note}\n`;
+      });
+
+      text += `\n🔒 *Tabung Deposit Keselamatan (Berasingan):* ${formatRM(fin.totalDepositPool)}\n`;
+      text += `_Sila buat bayaran tunggakan secepat mungkin untuk kelancaran sewa rumah. Terima kasih!_`;
+
+      // Copy using textarea fallback for iframe security
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        showToast('Teks laporan ringkas berjaya disalin ke papan klip WhatsApp!');
+      } catch (err) {
+        showToast('Gagal menyalin teks secara automatik.', 'error');
+      }
+      document.body.removeChild(textarea);
+    }
+
+    function exportDataJSON() {
+      const jsonStr = JSON.stringify(appData, null, 2);
+      const blob = new Blob([jsonStr], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Sumbangan_Rumah_Sewa_Backup_${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('Fail sandaran JSON berjaya dimuat turun!');
+    }
+
+    function triggerImportJSON() {
+      document.getElementById('importFileInput').click();
+    }
+
+    function importDataJSON(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        try {
+          const parsed = JSON.parse(evt.target.result);
+          if (parsed && parsed.members && parsed.expenses) {
+            appData = parsed;
+            saveAppData();
+            renderApp();
+            showToast('Data berjaya dimuat semula dari fail sandaran!');
+          } else {
+            showToast('Format fail sandaran tidak sah.', 'error');
+          }
+        } catch (err) {
+          showToast('Ralat membaca fail JSON.', 'error');
+        }
+      };
+      reader.readAsText(file);
+      e.target.value = ''; // reset input
+    }
+
+    function openModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) modal.classList.add('open');
+    }
+
+    function closeModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) modal.classList.remove('open');
+    }
+
+    // Close on backdrop click
+    document.querySelectorAll('.modal-backdrop').forEach(modal => {
+      modal.addEventListener('click', function(e) {
+        if (e.target === this) {
+          this.classList.remove('open');
+        }
+      });
+    });
+
+    // Custom non-blocking confirm fallback dialog using inline message UI
+    function confirmDialog(msg) {
+      return window.confirm ? window.confirm(msg) : true;
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Set current month picker
+      const monthPicker = document.getElementById('currentMonthPicker');
+      monthPicker.value = selectedMonth;
+
+      monthPicker.addEventListener('change', (e) => {
+        if (e.target.value) {
+          selectedMonth = e.target.value;
+          renderApp();
+        }
+      });
+
+      // Initial Render
+      renderApp();
+    });
+  </script>
+</body>
